@@ -1,13 +1,9 @@
 const Rsync = require('rsync');
 const path = require('path');
 
-module.exports = sync;
+const defaults = require('./defaults');
 
-const defaults = {
-    user: 'root',
-    root: '/',
-    source: '.',
-};
+module.exports = sync;
 
 function create(dir, config) {
     Object.getOwnPropertyNames(defaults).forEach(prop => {
@@ -49,7 +45,8 @@ function create(dir, config) {
 
     rsync.destination(
         path.join(
-            config.user + '@' + config.host + ':' + (config.root || ''), config.dest
+            config.user + '@' + config.host + ':' + (config.root || ''),
+            config.dest
         )
     );
 
