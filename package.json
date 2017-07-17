@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "rsync": "^0.4.0"
+    "rsync": "0.6.x"
   },
   "bin": {
     "rsynced": "bin/cli.js"
@@ -18,7 +18,7 @@
     "test": "test"
   },
   "devDependencies": {
-    "mocha": "^3.0.2"
+    "mocha": "3.4.x"
   },
   "repository": {
     "type": "git",
