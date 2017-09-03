@@ -1,41 +1,49 @@
 #!/usr/bin/env node
 'use strict';
 
-const path = require('path');
-const sync = require('../');
+const program = require('commander');
+// const os = require('os');
 
-const DEBUG = !! process.env.DEBUG;
-const dir = process.env.DIR || process.cwd();
-const syncfile = process.env.SYNCFILE || path.join(dir, 'rsync.json');
-const config = require(path.resolve(process.cwd(), syncfile));
+const rsynced = require('../');
 
-const name = process.argv[2] || 'default';
+var DEBUG = !! process.env.DEBUG;
 
-const destinations = {};
-config.destinations.forEach(dest => {
-    var name = dest.name || 'default';
-    destinations[name] = dest;
-});
+// eslint-disable-next-line eqeqeq
+const isBoolean = (val) => val == 'true';
 
-if (name in destinations === false) {
-    throw new Error(`Configuration "${name}" not found`);
+// commander argv parser
+program
+  .version('2.0.0')
+  .usage('[options]')
+  .option('--cwd [path]', 'set Current Working Directory', process.cwd())
+  .option('--config [path], -c', 'set config file', 'rsynced.hjson')
+  // .option('--') // dest setting
+  .option('--debug [boolian]', 'enable debugging', isBoolean, true)
+  .parse(process.argv);
+
+if (program.debug) {
+  DEBUG = true;
 }
 
-Object.assign(config, destinations[name]);
+if (!program.config) {
+  console.error('No config value set');
+  process.exit(1);
+}
 
-sync({
-    dir,
-    config,
-})
-.then((result) => {
+// rsynced Promise
+rsynced(program.config, false, program.cwd)
+  .then((result) => {
+  // if (program.debug) {
+  //   console.log(result);
+  // }
     process.exit(result ? 0 : 1);
-})
-.catch(error => {
+  })
+  .catch(error => {
     if (error) {
-        DEBUG
-            ? console.error(error.message)
-            : console.error(error.stack);
+      DEBUG
+        ? console.error(error.message)
+        : console.error(error.stack);
     }
 
     process.exit(1);
-});
+  });

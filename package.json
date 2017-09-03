@@ -1,16 +1,23 @@
 {
   "name": "rsynced",
-  "version": "1.3.0",
-  "description": "Rsync your project with destination server",
+  "version": "2.0.0",
+  "description": "Rsync your project using a config file",
   "main": "src/index.js",
   "scripts": {
-    "start": "node bin/cli.js",
-    "test": "mocha test/**.spec.js"
+    "start": "bin/cli.js",
+    "test": "mocha test/**.spec.js",
+    "example": "npm run example:build && npm run example:start",
+    "example:start": "./bin/cli.js --cwd example --config example/rsynced.hjson",
+    "example:clear": "rm -r example/dir*/*",
+    "example:build": "touch example/dir0/newfile.txt",
+    "lint": "eslint bin/** src/** test/**",
+    "lint:fix": "eslint --fix bin/** src/** test/**"
   },
   "license": "MIT",
   "dependencies": {
-    "rsync": "^0.6.1",
-    "yargs": "^8.0.2"
+    "commander": "^2.11.0",
+    "naml": "^2.0.0",
+    "rsync": "^0.6.1"
   },
   "bin": {
     "rsynced": "bin/cli.js"
@@ -19,6 +26,9 @@
     "test": "test"
   },
   "devDependencies": {
+    "chai": "^4.1.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^4.3.0",
     "mocha": "^3.4.2"
   },
   "repository": {
@@ -33,6 +43,7 @@
     "upload"
   ],
   "author": "rumkin",
+  "contributers": "lil5",
   "bugs": {
     "url": "https://github.com/rumkin/rsynced/issues"
   },

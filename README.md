@@ -4,35 +4,45 @@ Upload project to one or multiple locations at one time.
 
 ## Installation
 
-Install via npm:
+Global Install
+
+npm:
 
 ```shell
-npm i rsynced
+npm i -global https://github.com/lil5/rsynced
 ```
+
+yarn:
+
+```shell
+yarn global add https://github.com/lil5/rsynced
+```
+
+For local installation remove `global` option to command
 
 ## Usage
 
-Create `rsync.json` file into root of the project:
+### CLI
 
-```json
+Create `rsync.hjson` file into root of the project:
+
+```hjson
 {
-  "destinations": [
-    {
-      "name": "stage",
-      "host": "127.0.0.1",
-      "user": "root",
-      "chown": ":www-data",
-      "dest": "/root/projects/project",
-      "source": "build/*",
-      "sshKey": "local/key"
+  ssh: {
+    source: {
+      host: 127.0.0.1
+      user: root
+      source: build/*
+      sshKey: local/key
     }
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "tmp",
-    "local",
-    "rsync.json"
+  }
+  dest: /root/projects/project
+  exclude: [
+    node_modules,
+    build,
+    tmp,
+    local,
+    rsync.json,
   ]
 }
 ```
@@ -42,21 +52,33 @@ Create `rsync.json` file into root of the project:
 * **root** Host root.
 * **dest** Destination relative to the root.
 
-**NOTE**. Exclude `rsync.json` from the sync command on your own.
-
-Install `rsynced` package. Add npm `sync` command into your `package.json`:
-
-```json
-{
-    "scripts": {
-        "sync": "rsynced"
-    }
-}
-```
+**NOTE**. Exclude `rsync.hjson` from the sync command on your own.
 
 Run synchronization:
 ```
-npm run sync -- stage
+rsynced
+```
+
+**NOTE**. Run `rsynced -h` for more information about CLI arguments
+
+### Nodejs Module
+
+```javascript
+const rsynced = require('rsynced')
+
+rsynced(program.config, false, program.cwd)
+.then((result) => {
+  // ..
+})
+.catch(error => {
+  if (error) {
+    DEBUG
+    ? console.error(error.message)
+    : console.error(error.stack);
+  }
+
+  // ..
+})
 ```
 
 ## License

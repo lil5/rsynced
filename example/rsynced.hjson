@@ -1,0 +1,15 @@
+{
+  source: dir0/
+  dest: dir1/
+  exclude: [
+    rsynced.hjson
+  ]
+  flags: dra
+  exclude: [
+    node_modules
+    build
+    tmp
+    local
+    rsync.json
+  ]
+}

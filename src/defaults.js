@@ -1,5 +1,4 @@
 module.exports = {
-  user: process.env.USER,
-  root: '/',
   source: '.',
+  flags: 'dr',
 };

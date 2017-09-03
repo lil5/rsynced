@@ -1,3 +1,10 @@
+### v2.0.0
+
+* Add `delete` option.
+* to a seperate ssh option.
+* Edit rsynced now returns a promise.
+* Add help option in cli
+* Unfinished destinations option in config file
 
 ### v1.3.0
 
