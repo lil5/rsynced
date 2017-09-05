@@ -1,4 +1,4 @@
-{
+module.exports = {
   "env": {
     "node": true,
     "es6": true
@@ -30,6 +30,7 @@
     "no-nested-ternary": 2,
     "no-underscore-dangle": 0,
     "comma-dangle": [1, "always-multiline"],
-    "no-shadow": 1
+    "no-shadow": 1,
+    "indent": ["error", 2],
   }
 }
