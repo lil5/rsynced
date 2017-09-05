@@ -4,7 +4,7 @@
 * to a seperate ssh option.
 * Edit rsynced now returns a promise.
 * Add help option in cli
-* Unfinished destinations option in config file
+* Split code for better visibilty
 
 ### v1.3.0
 

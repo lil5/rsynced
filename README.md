@@ -47,11 +47,6 @@ Create `rsync.hjson` file into root of the project:
 }
 ```
 
-* **name** Host name
-* **sshKey** Path to your private key.
-* **root** Host root.
-* **dest** Destination relative to the root.
-
 **NOTE**. Exclude `rsync.hjson` from the sync command on your own.
 
 Run synchronization:
