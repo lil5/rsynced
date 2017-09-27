@@ -37,7 +37,7 @@ program
   .command('run')
   .option('-q --quiet', 'disable output')
   .option('-v --verbose', 'enable verbose output')
-  .option('-n, --name <string>', 'set name of destination', /^[a-z-]+$/)
+  .option('-n, --name <string>', 'set name of destination', /^[a-zA-Z]+(-[0-9]+)?$/)
   .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
   .option('--cwd [path]', 'set Current Working Directory', '.')
   .action((options) => {
@@ -53,7 +53,7 @@ program
 program
   .command('dry')
   .option('-q --quiet', 'disable output')
-  .option('-n, --name <string>', 'set name of destination', /^[a-z-]+$/)
+  .option('-n, --name <string>', 'set name of destination', /^[a-zA-Z]+(-[0-9]+)?$/)
   .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
   .option('--cwd [path]', 'set Current Working Directory', '.')
   .action((options) => {
