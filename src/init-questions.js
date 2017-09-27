@@ -4,25 +4,25 @@ const questions = require('questions')
 const NAML = require('naml')
 
 const fileTemplate = (options) => `{
-  destinations: [
-    {
-      name: 'default',
-      src: '',
-      ${options.isSSH ? `// dest: '',
-      ssh: { dest: {
-        host: 'localhost',
-        user: 'lil',
-        path: '/media/lil/RedCard/Projects/rsynced/example/dir1/',
-        key: './my.key',
-      }},` : `dest: '',`}
-      // delete: false,
-      flags: 'u',
-      exclude: [
-      ],
-      include: [
-      ],
-    },
-  ],
+\tdestinations: [
+\t\t{
+\t\t\tname: 'default',
+\t\t\tsrc: '',
+\t\t\t${options.isSSH ? `// dest: '',
+\t\t\tssh: { dest: {
+\t\t\t\thost: 'localhost',
+\t\t\t\tuser: 'lil',
+\t\t\t\tpath: '/media/lil/RedCard/Projects/rsynced/example/dir1/',
+\t\t\t\tkey: './my.key',
+\t\t\t}},` : `dest: '',`}
+\t\t\t// delete: false,
+\t\t\tflags: 'u',
+\t\t\texclude: [
+\t\t\t],
+\t\t\tinclude: [
+\t\t\t],
+\t\t},
+\t],
 }`
 
 const initQuestions = (isForce, filename, cwd = '.') => {
