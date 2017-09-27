@@ -23,9 +23,10 @@
   "bin": {
     "rsynced": "bin/cli.js"
   },
-  "directories": {
-    "test": "test"
-  },
+  "files": [
+    "src/*.js",
+    "bin/*.js"
+  ],
   "devDependencies": {
     "ava": "^0.22.0",
     "eslint": "^4.6.1",
@@ -50,10 +51,7 @@
   ],
   "author": "rumkin",
   "contributors": [
-    {
-      "name": "lil5",
-      "email": "li@last.nl"
-    }
+    "lil5 <li@last.nl>"
   ],
   "bugs": {
     "url": "https://github.com/rumkin/rsynced/issues"
