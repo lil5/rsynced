@@ -1,3 +1,7 @@
+### v2.0.1
+
+* Add `init` (like npm init)
+
 ### v2.0.0
 
 * Add `delete` option.

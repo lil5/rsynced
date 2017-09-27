@@ -9,7 +9,7 @@ Global Install
 npm:
 
 ```shell
-npm i -global https://github.com/lil5/rsynced
+npm i -g https://github.com/lil5/rsynced
 ```
 
 yarn:
@@ -28,14 +28,20 @@ Create `rsync.hjson` file into root of the project:
 
 ```hjson
 {
-  ssh: {
-    source: {
-      host: 127.0.0.1
-      user: root
-      source: build/*
-      sshKey: local/key
+  destinations: [
+    {
+      name: home
+      ssh: {
+        src: {
+          host: 127.0.0.1
+          user: root
+          path: build/*
+          sshKey: local/key
+        }
+      }
     }
-  }
+  ]
+  src: build/
   dest: /root/projects/project
   exclude: [
     node_modules,
@@ -61,7 +67,7 @@ rsynced
 ```javascript
 const rsynced = require('rsynced')
 
-rsynced(program.config, false, program.cwd)
+rsynced(configFile, destinationsName, cwd)
 .then((result) => {
   // ..
 })

@@ -1,7 +1,8 @@
-const defaultsConfig = require('./defaults');
-const NAML = require('naml');
-const path = require('path');
-const fs = require('fs');
+const defaultsConfig = require('./defaults')
+const findElement = require('./find-element')
+const NAML = require('naml')
+const path = require('path')
+const fs = require('fs')
 
 /**
  * read file
@@ -9,36 +10,39 @@ const fs = require('fs');
  * @return {Promise}    resolve Object
  */
 const readFiles = (fp) => {
-  if (fp === false) {
-    return Promise.resolve({});
-  } else {
-    return new Promise((resolve, reject) => {
-      fs.readFile(fp, 'utf8', (err, data) => {
-        if (err) {
-          reject(err);
-        }
-        try {
-          let extention = path.extname(fp);
+  // if (fp === false) { // use if user defaults feature completed
+  //   return Promise.resolve({});
+  // } else {
+  return new Promise((resolve, reject) => {
+    fs.readFile(fp, 'utf8', (err, data) => {
+      if (err) {
+        reject(err)
+      }
+      let ans = {}
+      try {
+        let extention = path.extname(fp)
 
-          resolve(NAML.parse(data, extention));
-        } catch (parseErr) {
-          reject(parseErr);
-        }
-      });
-    });
-  }
-};
+        ans = NAML.parse(data, extention)
+      } catch (parseErr) {
+        reject(parseErr)
+      }
 
-const merge = function(defaults, config) {
+      resolve(ans)
+    })
+  })
+  // }
+}
+
+const merge = (defaults, config) => {
   // merge config with defaults
   Object.getOwnPropertyNames(defaults).forEach(prop => {
-    if (! config.hasOwnProperty(prop)) {
-      config[prop] = defaults[prop];
+    if (!config.hasOwnProperty(prop)) {
+      config[prop] = defaults[prop]
     }
-  });
+  })
 
-  return config;
-};
+  return config
+}
 
 /**
  * read configs from json files and merge into one config object
@@ -48,37 +52,42 @@ const merge = function(defaults, config) {
  */
 const mergeConfig = (localFp, destination = false) => {
   return readFiles(localFp).then((result) => {
+    var localConfig = result
+    var destConfig
+    var finalConfig = defaultsConfig
 
-    var localConfig = result;
-    var destConfig;
-    var finalConfig = defaultsConfig;
+    // retreve objects from files
+    var isDestinations = destination !== false
 
     // throw error if there is no match
     // between chosen destination and destinations inside localConfig
-    if (destination && destination in localConfig.destinations === false) {
-      throw new Error(destination+' is not in destinations');
+    var whichDestination = false
+    if (isDestinations) {
+      whichDestination =
+      findElement(localConfig.destinations, 'name', destination)
+
+      if (whichDestination === false) {
+        throw new Error('"' + destination + '" is not in destinations')
+      }
     }
 
-    // retreve objects from files
-    var wasDestination = destination !== false;
     // get localConfigs destinations
     if (localConfig.destinations) {
-      if (wasDestination) {
-        destConfig = localConfig.destinations[destination];
+      if (isDestinations) {
+        destConfig = localConfig.destinations[whichDestination]
       }
-      delete localConfig.destinations;
+      delete localConfig.destinations
     }
     // merge localConfig after localConfigs destinations removed
-    finalConfig = merge(finalConfig, localConfig);
-    if (wasDestination) {
-      finalConfig = merge(finalConfig, destConfig);
+    finalConfig = merge(finalConfig, localConfig)
+    if (isDestinations) {
+      finalConfig = merge(finalConfig, destConfig)
     }
 
-    return finalConfig;
+    return finalConfig
+  })
+}
 
-  });
-};
-
-module.exports = mergeConfig;
-module.exports.readFiles = readFiles;
-module.exports.merge = merge;
+module.exports = mergeConfig
+module.exports.readFiles = readFiles
+module.exports.merge = merge

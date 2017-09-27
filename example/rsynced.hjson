@@ -1,15 +1,20 @@
+# **NOTE** tests will break if edited!
 {
-  source: dir0/
-  dest: dir1/
-  exclude: [
-    rsynced.hjson
+  src: dir0/
+  destinations: [
+    {
+      name: test
+      dest: dir1/
+      delete: true
+    }
   ]
+  dest: dir2/
   flags: dra
   exclude: [
     node_modules
     build
     tmp
     local
-    rsync.json
+    rsynced.hjson
   ]
 }

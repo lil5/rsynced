@@ -1,3 +1,5 @@
+const rtn = {}
+
 /**
  * execute rsync in Promise
  * @see https://github.com/mattijs/node-rsync#executecallback-stdouthandler-stderrhandler
@@ -6,64 +8,70 @@
  */
 const exec = (rsync) => {
   return new Promise((resolve, reject) => {
-    var child;
+    var child
 
-    function onQuit() {
+    function onQuit () {
       if (child) {
-        child.kill();
+        child.kill()
       }
 
-      reject(new Error('Unexpectedly exited'));
-      unbind();
+      reject(new Error('Unexpectedly exited'))
+      unbind()
     };
 
-    function onStop() {
-      resolve(false);
-      unbind();
+    function onStop () {
+      resolve(false)
+      unbind()
     }
 
-    function bind() {
-      process.on('SIGINT', onStop);
-      process.on('SIGTERM', onStop);
-      process.on('exit', onQuit);
+    function bind () {
+      process.on('SIGINT', onStop)
+      process.on('SIGTERM', onStop)
+      process.on('exit', onQuit)
     }
 
-    function unbind() {
-      process.removeListener('SIGINT', onStop);
-      process.removeListener('SIGTERM', onStop);
-      process.removeListener('exit', onQuit);
+    function unbind () {
+      process.removeListener('SIGINT', onStop)
+      process.removeListener('SIGTERM', onStop)
+      process.removeListener('exit', onQuit)
     }
 
-    var rtn = {};
-
-    child = rsync.execute((error, code, cmd) => {
-      if (error) {
-        reject(error);
-      } else {
-        if (code) {
-          rtn.code = code;
-          resolve(rtn);
-        } else if (cmd) {
-          rtn.cmd = cmd;
-          resolve(rtn);
+    child = rsync.execute(
+      // callback
+      (error, code, cmd) => {
+        if (error) {
+          reject(error)
         } else {
-          reject(new Error('no error, code or cmd given'));
+          if (code) {
+            rtn.code = code
+            // resolve(rtn)
+          } else if (cmd) {
+            rtn.cmd = cmd
+            // resolve(rtn)
+          } else {
+            reject(new Error('no error, code or cmd given'))
+          }
         }
+
+        unbind()
+        resolve(rtn)
+      },
+      // stdoutHandler
+      (buffer) => {
+        let cmdbuffer = buffer.toString()
+        // console.log(cmdbuffer)
+        rtn.stdout = cmdbuffer
+      },
+      // stderrHandler
+      (buffer) => {
+        let errbuffer = buffer.toString()
+        // console.log(errbuffer)
+        rtn.stderr = errbuffer
       }
+    )
 
-      unbind();
-    }, (buffer) => {
-      let cmdbuffer = buffer.toString();
-      console.log(cmdbuffer);
-      rtn.stdout = cmdbuffer;
-    }, (buffer) => {
-      let errbuffer = buffer.toString();
-      console.log(errbuffer);
-      rtn.stderr = errbuffer;
-    });
+    bind()
+  })
+}
 
-    bind();
-  });
-};
-
-module.exports = exec;
+module.exports = exec
