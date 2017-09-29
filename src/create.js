@@ -12,9 +12,24 @@ const sshPath = (sshConfig) => {
     throw new Error('ssh config not complete')
   }
 
+  sshConfig.user = setEnvironment(sshConfig.user)
+  sshConfig.path = setEnvironment(sshConfig.path)
+
   return path.join(
     sshConfig.user + '@' + sshConfig.host + ':' + sshConfig.path
   )
+}
+
+const setEnvironment = (src) => {
+  let env = process.env
+  console.log(src)
+  if (src.search(/\$(USER|HOME|LOGNAME)/) !== -1) {
+    ;['USER', 'PWD', 'HOME', 'LOGNAME'].forEach(envProp => {
+      src = src.replace(new RegExp('\\$' + envProp), env[envProp])
+    })
+  }
+
+  return src
 }
 
 /**
@@ -24,21 +39,19 @@ const sshPath = (sshConfig) => {
  * @throw {Error}
  */
 module.exports = function create (config) {
-  var rsync = new Rsync()
+  let rsync = new Rsync()
   rsync.cwd(config.cwd)
   rsync.progress()
 
+  // value in config is value in rsync
   ;['flags', 'exclude', 'include'].forEach(el => {
     if (config[el]) rsync[el](config[el])
   })
 
-  if (config.delete === true) {
-    rsync.delete()
-  }
-
-  if (config.dry === true) {
-    rsync.dry()
-  }
+  // if value true in config enable in rsync
+  ;['delete', 'dry'].forEach(el => {
+    if (config[el] === true) rsync[el]()
+  })
 
   if (config.chown) {
     rsync.set('chown', config.chown)
@@ -66,17 +79,10 @@ module.exports = function create (config) {
     }
   }
 
-  // log if ssh src and dest
-  // console.log(`isString dest: ${isString(rsync.destination())}`)
-  // console.log(`isString src[0]: ${isString(rsync.source()[0])}`)
-
-  // log if config src and dist
-  // console.log(`dest ${config.dest}`)
-  // console.log(`src ${config.src}`)
-
   // local
   if (!isString(rsync.source()[0])) {
     if (config.src) {
+      config.src = setEnvironment(config.src)
       rsync.source(config.src)
     } else {
       throw new Error('source not set')
@@ -85,6 +91,7 @@ module.exports = function create (config) {
 
   if (!isString(rsync.destination())) {
     if (config.dest) {
+      config.dest = setEnvironment(config.dest)
       rsync.destination(config.dest)
     } else {
       throw new Error('destination not set')
