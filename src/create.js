@@ -22,7 +22,7 @@ const sshPath = (sshConfig) => {
 
 const setEnvironment = (src) => {
   let env = process.env
-  console.log(src)
+
   if (src.search(/\$(USER|HOME|LOGNAME)/) !== -1) {
     ;['USER', 'PWD', 'HOME', 'LOGNAME'].forEach(envProp => {
       src = src.replace(new RegExp('\\$' + envProp), env[envProp])
