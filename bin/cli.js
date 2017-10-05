@@ -3,6 +3,7 @@
 
 const program = require('commander')
 const log = require('loglevel')
+const consoleSize = require('window-size')
 const rsynced = require('../')
 
 const setVerbosity = (verbose, quiet) => {
@@ -14,15 +15,29 @@ const setVerbosity = (verbose, quiet) => {
   /* eslint-enable */
 }
 
+const drawLine = (text = '') => {
+  text = text.toUpperCase()
+  let size = consoleSize.get().width
+  let line = `---${text.length > 0 ? ` ${text} ` : ''}-`
+  while (size > line.length) {
+    line += '-'
+  }
+  line = '\n' + line
+  return line
+}
+
 // commands for rsynced
 const rsyncedThen = result => {
+  log.info(drawLine('command'))
   log.info(result.cmd)
+  log.info(drawLine('log'))
   log.info(result.stdout)
+  log.info(drawLine())
   process.exit(result ? 0 : 1)
 }
 const rsyncedCatch = error => {
   if (error) {
-    log.error(error.message)
+    log.error(drawLine('error') + '\n' + error.message)
     log.trace(error.stack)
   }
 
@@ -37,7 +52,7 @@ program
   .command('run [name]')
   .option('-q --quiet', 'disable output')
   .option('-v --verbose', 'enable verbose output')
-  .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
+  .option('-c, --config [filename]', 'set config file', '.rsynced.hjson')
   .action((name, options) => {
     setVerbosity(options.verbose, options.quiet)
     // log.trace(options)
@@ -51,7 +66,7 @@ program
 program
   .command('dry [name]')
   .option('-q --quiet', 'disable output')
-  .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
+  .option('-c, --config [filename]', 'set config file', '.rsynced.hjson')
   .action((name, options) => {
     setVerbosity(true, options.quiet) // always verbose unless quiet
 
@@ -64,7 +79,7 @@ program
 program
   .command('init')
   .option('-f --force')
-  .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
+  .option('-c, --config [filename]', 'set config file', '.rsynced.hjson')
   .action((options) => {
     setVerbosity(false, false) // info to warning
 

@@ -4,7 +4,7 @@ const fs = require('fs')
 const mergeConfig = require('../src/merge-config')
 
 const test = ava.test
-const exampleConfig = 'example/rsynced.hjson'
+const exampleConfig = 'example/.rsynced.hjson'
 const testConfig = 'example/bad.hjson'
 
 // Help Files
@@ -27,7 +27,7 @@ ava.before('create bad json', () => fs.writeFileSync('example/bad.hjson',
     build
     tmp
     local
-    rsynced.hjson
+    .rsynced.hjson
   ]`))
 
 ava.before('create simple json', () => fs.writeFileSync('example/simple.hjson',
@@ -107,7 +107,7 @@ test('mergeConfig true copy of example', t => {
       'build',
       'tmp',
       'local',
-      'rsynced.hjson',
+      '.rsynced.hjson',
     ],
   }
 
@@ -132,7 +132,7 @@ test('mergeConfig with destination copy example', t => {
       'build',
       'tmp',
       'local',
-      'rsynced.hjson',
+      '.rsynced.hjson',
     ],
   }
 

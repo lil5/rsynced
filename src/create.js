@@ -53,6 +53,10 @@ module.exports = function create (config) {
     if (config[el] === true) rsync[el]()
   })
 
+  if (!(config.filter === false)) {
+    rsync.set('filter', 'dir-merge /.rsync-filter')
+  }
+
   if (config.chown) {
     rsync.set('chown', config.chown)
   }
