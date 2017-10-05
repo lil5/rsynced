@@ -34,33 +34,29 @@ program
   .version('2.0.1')
 
 program
-  .command('run')
+  .command('run [name]')
   .option('-q --quiet', 'disable output')
   .option('-v --verbose', 'enable verbose output')
-  .option('-n, --name <string>', 'set name of destination', /^[a-zA-Z]+(-[0-9]+)?$/)
   .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
-  .option('--cwd [path]', 'set Current Working Directory', '.')
-  .action((options) => {
+  .action((name, options) => {
     setVerbosity(options.verbose, options.quiet)
     // log.trace(options)
 
     // rsynced Promise
-    rsynced(options.config, options.name, options.cwd)
+    rsynced(options.config, name, '.')
       .then((result) => rsyncedThen(result))
       .catch(error => rsyncedCatch(error))
   })
 
 program
-  .command('dry')
+  .command('dry [name]')
   .option('-q --quiet', 'disable output')
-  .option('-n, --name <string>', 'set name of destination', /^[a-zA-Z]+(-[0-9]+)?$/)
   .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
-  .option('--cwd [path]', 'set Current Working Directory', '.')
-  .action((options) => {
+  .action((name, options) => {
     setVerbosity(true, options.quiet) // always verbose unless quiet
 
     // rsynced Promise
-    rsynced.dry(options.config, options.name, options.cwd)
+    rsynced.dry(options.config, name, '.')
       .then((result) => rsyncedThen(result))
       .catch(error => rsyncedCatch(error))
   })
@@ -69,14 +65,13 @@ program
   .command('init')
   .option('-f --force')
   .option('-c, --config [filename]', 'set config file', 'rsynced.hjson')
-  .option('--cwd [path]', 'set Current Working Directory', '.')
   .action((options) => {
     setVerbosity(false, false) // info to warning
 
     rsynced.initQuestions(
       options.force,
       options.config,
-      options.cwd,
+      '.'
     )
       .then((result) => log.info(result))
       .catch(error => rsyncedCatch(error))
