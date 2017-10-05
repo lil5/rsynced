@@ -1,7 +1,7 @@
 {
-  "name": "rsynced",
-  "version": "2.0.1",
-  "description": "Rsync your project with destination server",
+  "name": "rsynconfig",
+  "version": "2.1.0",
+  "description": "One config file for all rsync.",
   "main": "src/index.js",
   "scripts": {
     "start": "node bin/cli.js",
@@ -22,7 +22,7 @@
     "yargs": "^8.0.2"
   },
   "bin": {
-    "rsynced": "bin/cli.js"
+    "rsynconfig": "bin/cli.js"
   },
   "files": [
     "src/*.js",
@@ -41,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rumkin/rsynced.git"
+    "url": "git+https://github.com/lil5/rsynconfig.git"
   },
   "keywords": [
     "rsync",
@@ -50,12 +50,19 @@
     "sync",
     "upload"
   ],
-  "author": "rumkin",
+  "author": "lil5",
   "contributors": [
-    "lil5 <li@last.nl>"
+    "lil5 <li@last.nl>",
+    "rumkin"
   ],
   "bugs": {
-    "url": "https://github.com/rumkin/rsynced/issues"
+    "url": "https://github.com/lil5/rsynconfig/issues"
   },
-  "homepage": "https://github.com/rumkin/rsynced#readme"
+  "homepage": "https://github.com/lil5/rsynconfig#readme",
+  "nyc": {
+    "exclude": [
+      "bin/*",
+      "**/*.spec.js"
+    ]
+  }
 }

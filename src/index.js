@@ -1,12 +1,12 @@
 const path = require('path')
 
 // rsync
-const mergeConfig = require('./merge-config')
-const exec = require('./exec')
-const create = require('./create')
-const initQuestions = require('./init-questions')
+const mergeConfig = require('./rsync/merge/merge-config')
+const execute = require('./rsync/execute')
+const create = require('./rsync/merge/create')
+const init = require('./init/')
 
-const rsynced = (config, destination = false, cwd = '.', dry = false) => {
+const rsynconfig = (config, destination = false, cwd = '.', dry = false) => {
   // resolve paths
   config = path.resolve(cwd, config)
 
@@ -22,13 +22,13 @@ const rsynced = (config, destination = false, cwd = '.', dry = false) => {
 
       if (dry === true) finalConfig.dry()
 
-      return exec(finalConfig)
+      return execute(finalConfig)
         .then((rsyncLogs) => rsyncLogs)
     })
 }
 
-const dry = (config, destination = false, cwd = '.') => rsynced(config, destination, cwd, true)
+const dry = (config, destination = false, cwd = '.') => rsynconfig(config, destination, cwd, true)
 
-module.exports = rsynced
+module.exports = rsynconfig
 module.exports.dry = dry
-module.exports.initQuestions = initQuestions
+module.exports.init = init

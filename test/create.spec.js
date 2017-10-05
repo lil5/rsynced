@@ -1,4 +1,4 @@
-const create = require('../src/create')
+const create = require('../src/rsync/merge/create')
 // const rsync = require('rsync')
 const ava = require('ava')
 // const fs = require('fs')
@@ -11,16 +11,16 @@ const example = () => {
       dest: {
         host: 'localhost',
         user: 'lil',
-        path: '/media/lil/RedCard/Projects/rsynced/example/dir1/',
+        path: '/media/lil/RedCard/Projects/rsynconfig/example/dir1/',
       },
       src: {
         host: 'localhost',
         user: 'lil',
-        path: '/media/lil/RedCard/Projects/rsynced/example/dir0/',
+        path: '/media/lil/RedCard/Projects/rsynconfig/example/dir0/',
       },
     },
-    src: 'example/dir0',
-    dest: 'example/dir1',
+    src: 'example/dir0/',
+    dest: 'example/dir1/',
     chown: ':www-data',
     cwd: process.cwd(),
   }
@@ -31,9 +31,10 @@ test('should create valid ssh command', t => {
   delete myExample.src
   delete myExample.ssh.dest
 
-  t.true((
-    create(myExample).command() === 'rsync --progress --chown=:www-data --rsh=ssh lil@localhost:/media/lil/RedCard/Projects/rsynced/example/dir0/ example/dir1'
-  ))
+  t.regex(
+    create(myExample).command(),
+    /rsync --progress .* --rsh=ssh lil@localhost:\/([\w\d]+\/)+ ([\w\d]+\/)+/,
+  )
 })
 
 test('duel ssh remotes', t => {
@@ -87,19 +88,22 @@ const giveSource = bool => bool ? 'source' : 'destination'
     switch (isSsh) {
       // case [[true, true], [true, true]]:
       case false:
-        t.true(
-          ans === 'rsync --progress --chown=:www-data example/dir0 example/dir1'
+        t.regex(
+          ans,
+          /rsync --progress .* ([\w\d]+\/)+ ([\w\d]+\/)+/,
         )
         break
       case 2:
-        t.true(
-          ans === 'rsync --progress --chown=:www-data --rsh=ssh example/dir0 lil@localhost:/media/lil/RedCard/Projects/rsynced/example/dir1/'
+        t.regex(
+          ans,
+          /rsync --progress .* --rsh=ssh ([\w\d]+\/)+ lil@localhost:\/([\w\d]+\/)+/,
         )
         break
       case 1:
-        t.true((
-          ans === 'rsync --progress --chown=:www-data --rsh=ssh lil@localhost:/media/lil/RedCard/Projects/rsynced/example/dir0/ example/dir1'
-        ))
+        t.regex(
+          ans,
+          /rsync --progress .* --rsh=ssh lil@localhost:\/([\w\d]+\/)+ ([\w\d]+\/)+/,
+        )
         break
     }
   })

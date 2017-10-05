@@ -1,73 +1,77 @@
-# Rsynced
+# rsynconfig
 
-Upload project to one or multiple locations at one time.
+> One config file for all rsync.
 
 ## Installation
 
-Global Install
+npm: `npm i -g https://github.com/lil5/rsynconfig`
 
-npm:
-
-```shell
-npm i -g https://github.com/lil5/rsynced
-```
-
-yarn:
-
-```shell
-yarn global add https://github.com/lil5/rsynced
-```
-
-For local installation remove `global` option to command
+yarn: `yarn global add https://github.com/lil5/rsynconfig`
 
 ## Usage
 
-### CLI
+> Run `rsynconfig -h` for more information about CLI arguments
 
-Create `rsync.hjson` file into root of the project:
+### Example
 
-```hjson
-{
-  destinations: [
-    {
-      name: home
-      ssh: {
-        src: {
-          host: 127.0.0.1
-          user: root
-          path: build/*
-          sshKey: local/key
-        }
-      }
-    }
-  ]
-  src: build/
-  dest: /root/projects/project
-  exclude: [
-    node_modules,
-    build,
-    tmp,
-    local,
-    rsync.json,
-  ]
-}
+Create `rsynconfig.toml` file into root of the project:
+
+```toml
+exclude = ['.rsync-filter']
+
+[[destinations]]
+name = 'sshtest'
+src = './dir0/'
+delete = false
+flags = 'u'
+[destinations.ssh.dest]
+  host = 'localhost'
+  user = 'lil'
+  path = '/dir1/'
+  key = './my.key'
+
+[[destinations]]
+name = 'localtest'
+src = 'dir0'
+dest = 'dir1'
+delete = true
+flags = 'dra'
 ```
 
-**NOTE**. Exclude `rsync.hjson` from the sync command on your own.
+### Run synchronization
 
-Run synchronization:
+```shell
+rsynconfig run localtest
 ```
-rsynced
+
+**dry run:**
+```shell
+rsynconfig dry localtest
 ```
 
-**NOTE**. Run `rsynced -h` for more information about CLI arguments
+### Create template 'rsynconfig.toml' file
 
-### Nodejs Module
+```shell
+rsynconfig init
+```
+
+## Not Another Markup Language (__[NAML](https://github.com/MarkTiedemann/naml)__)
+
+Using `-c <filename>.<exten>` you can make your config file under the following extentions:
+* json
+* hjson
+* json5
+* cson
+* yaml
+* toml
+* ini
+
+## Nodejs Module
 
 ```javascript
-const rsynced = require('rsynced')
+const rsynconfig = require('rsynconfig')
 
-rsynced(configFile, destinationsName, cwd)
+rsynconfig(configFile, destinationsName, cwd)
 .then((result) => {
   // ..
 })

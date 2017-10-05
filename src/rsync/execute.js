@@ -1,12 +1,10 @@
-const rtn = {}
-
 /**
  * execute rsync in Promise
  * @see https://github.com/mattijs/node-rsync#executecallback-stdouthandler-stderrhandler
  * @param {Object}    rsync config
- * @return {Promise}        then return code or cmd
+ * @return {Promise}  then return code or cmd
  */
-const exec = (rsync) => {
+const execute = (rsync) => {
   return new Promise((resolve, reject) => {
     var child
 
@@ -35,6 +33,8 @@ const exec = (rsync) => {
       process.removeListener('SIGTERM', onStop)
       process.removeListener('exit', onQuit)
     }
+
+    const rtn = {}
 
     child = rsync.execute(
       // callback
@@ -74,4 +74,4 @@ const exec = (rsync) => {
   })
 }
 
-module.exports = exec
+module.exports = execute

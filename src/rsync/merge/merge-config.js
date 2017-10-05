@@ -1,4 +1,4 @@
-const defaultsConfig = require('./defaults')
+const defaultsConfig = require('../../defaults')
 const findElement = require('./find-element')
 const NAML = require('naml')
 const path = require('path')

@@ -1,10 +1,10 @@
 const ava = require('ava')
 const fs = require('fs')
 
-const mergeConfig = require('../src/merge-config')
+const mergeConfig = require('../src/rsync/merge/merge-config')
 
 const test = ava.test
-const exampleConfig = 'example/.rsynced.hjson'
+const exampleConfig = 'example/.rsynconfig.toml'
 const testConfig = 'example/bad.hjson'
 
 // Help Files
@@ -27,18 +27,17 @@ ava.before('create bad json', () => fs.writeFileSync('example/bad.hjson',
     build
     tmp
     local
-    .rsynced.hjson
+    .rsynconfig.toml
   ]`))
 
-ava.before('create simple json', () => fs.writeFileSync('example/simple.hjson',
-  `{
-  src: dir0/
-  dest: dir1/
-  flags: dra
-  }`))
+ava.before('create simple json', () => fs.writeFileSync('example/simple.yaml',
+  `src: dir0/
+dest: dir1/
+flags: dra
+`))
 
 ava.after('cleanup', () => {
-  fs.unlinkSync('example/simple.hjson')
+  fs.unlinkSync('example/simple.yaml')
   fs.unlinkSync('example/bad.hjson')
 })
 
@@ -106,8 +105,8 @@ test('mergeConfig true copy of example', t => {
       'node_modules',
       'build',
       'tmp',
-      'local',
-      '.rsynced.hjson',
+      '.rsynconfig.toml',
+      '.gitkeep',
     ],
   }
 
@@ -131,8 +130,8 @@ test('mergeConfig with destination copy example', t => {
       'node_modules',
       'build',
       'tmp',
-      'local',
-      '.rsynced.hjson',
+      '.rsynconfig.toml',
+      '.gitkeep',
     ],
   }
 
@@ -158,7 +157,7 @@ test('mergeConfig with no destinations', t => {
     dest: 'dir1/',
     flags: 'dra',
   }
-  return mergeConfig('example/simple.hjson')
+  return mergeConfig('example/simple.yaml')
     .catch((err) => {
       t.fail(err)
     })

@@ -6,7 +6,7 @@
 
 * Add `delete` option.
 * to a seperate ssh option.
-* Edit rsynced now returns a promise.
+* Edit rsynconfig now returns a promise.
 * Add help option in cli
 * Split code for better visibilty
 

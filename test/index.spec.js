@@ -1,13 +1,13 @@
 const ava = require('ava')
 const fs = require('fs')
-const rsynced = require('../')
+const rsynconfig = require('../')
 
 const test = ava.test
 
 ava.after('remove files', () => fs.unlinkSync('example/dir1/newfile.txt'))
 
 test('full rsync using destinations', t => {
-  return rsynced('.rsynced.hjson', 'test', './example')
+  return rsynconfig('.rsynconfig.toml', 'test', './example')
     .then((result) => {
       t.true(fs.existsSync('example/dir1/newfile.txt'))
       // process.exit(result ? 0 : 1)

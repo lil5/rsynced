@@ -1,0 +1,10 @@
+# **NOTE** tests will break if edited!
+src = "dir0/"
+dest = "dir2/"
+flags = "dra"
+exclude = ["node_modules", "build", "tmp", ".rsynconfig.toml", ".gitkeep"]
+
+[[destinations]]
+name = "test"
+dest = "dir1/"
+delete = true

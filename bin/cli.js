@@ -4,7 +4,7 @@
 const program = require('commander')
 const log = require('loglevel')
 const consoleSize = require('window-size')
-const rsynced = require('../')
+const rsynconfig = require('../')
 
 const setVerbosity = (verbose, quiet) => {
   /* eslint-disable eqeqeq */
@@ -26,8 +26,8 @@ const drawLine = (text = '') => {
   return line
 }
 
-// commands for rsynced
-const rsyncedThen = result => {
+// commands for rsynconfig
+const rsynconfigThen = result => {
   log.info(drawLine('command'))
   log.info(result.cmd)
   log.info(drawLine('log'))
@@ -35,7 +35,7 @@ const rsyncedThen = result => {
   log.info(drawLine())
   process.exit(result ? 0 : 1)
 }
-const rsyncedCatch = error => {
+const rsynconfigCatch = error => {
   if (error) {
     log.error(drawLine('error') + '\n' + error.message)
     log.trace(error.stack)
@@ -52,44 +52,44 @@ program
   .command('run [name]')
   .option('-q --quiet', 'disable output')
   .option('-v --verbose', 'enable verbose output')
-  .option('-c, --config [filename]', 'set config file', '.rsynced.hjson')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
   .action((name, options) => {
     setVerbosity(options.verbose, options.quiet)
     // log.trace(options)
 
-    // rsynced Promise
-    rsynced(options.config, name, '.')
-      .then((result) => rsyncedThen(result))
-      .catch(error => rsyncedCatch(error))
+    // rsynconfig Promise
+    rsynconfig(options.config, name, '.')
+      .then((result) => rsynconfigThen(result))
+      .catch(error => rsynconfigCatch(error))
   })
 
 program
   .command('dry [name]')
   .option('-q --quiet', 'disable output')
-  .option('-c, --config [filename]', 'set config file', '.rsynced.hjson')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
   .action((name, options) => {
     setVerbosity(true, options.quiet) // always verbose unless quiet
 
-    // rsynced Promise
-    rsynced.dry(options.config, name, '.')
-      .then((result) => rsyncedThen(result))
-      .catch(error => rsyncedCatch(error))
+    // rsynconfig Promise
+    rsynconfig.dry(options.config, name, '.')
+      .then((result) => rsynconfigThen(result))
+      .catch(error => rsynconfigCatch(error))
   })
 
 program
   .command('init')
   .option('-f --force')
-  .option('-c, --config [filename]', 'set config file', '.rsynced.hjson')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
   .action((options) => {
     setVerbosity(false, false) // info to warning
 
-    rsynced.initQuestions(
+    rsynconfig.init(
       options.force,
       options.config,
       '.'
     )
       .then((result) => log.info(result))
-      .catch(error => rsyncedCatch(error))
+      .catch(error => rsynconfigCatch(error))
   })
 
 program.parse(process.argv)
