@@ -28,11 +28,15 @@ const drawLine = (text = '') => {
 
 // commands for rsynconfig
 const rsynconfigThen = result => {
-  log.info(drawLine('command'))
-  log.info(result.cmd)
-  log.info(drawLine('log'))
-  log.info(result.stdout)
-  log.info(drawLine())
+  if (result === false) {
+    log.error(drawLine('canceled'))
+  } else {
+    log.info(drawLine('command'))
+    log.info(result.cmd)
+    log.info(drawLine('log'))
+    log.info(result.stdout)
+    log.info(drawLine())
+  }
   process.exit(result ? 0 : 1)
 }
 const rsynconfigCatch = error => {
