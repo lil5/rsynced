@@ -1,9 +1,9 @@
 const path = require('path')
 
 // rsync
-const mergeConfig = require('./rsync/merge/merge-config')
-const execute = require('./rsync/execute')
-const create = require('./rsync/merge/create')
+const mergeConfig = require('./merge/merge-config')
+const execute = require('./execute')
+const create = require('./merge/create')
 
 const run = (config, destination = false, cwd = '.', dry = false) => {
   // resolve paths
