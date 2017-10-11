@@ -10,7 +10,7 @@ end note
 :getFile(configFilePath);
 while (destinations)
 :mergeConfig();
-:createRsync();
+:createRsyncObj();
 :execute();
 endwhile
 stop
