@@ -59,13 +59,13 @@ const execute = (rsync) => {
       // stdoutHandler
       (buffer) => {
         let cmdbuffer = buffer.toString()
-        // console.log(cmdbuffer)
+        console.log(cmdbuffer)
         rtn.stdout = cmdbuffer
       },
       // stderrHandler
       (buffer) => {
         let errbuffer = buffer.toString()
-        // console.log(errbuffer)
+        console.log(errbuffer)
         rtn.stderr = errbuffer
       }
     )

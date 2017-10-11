@@ -31,11 +31,9 @@ const rsynconfigThen = result => {
   if (result === false) {
     log.error(drawLine('canceled'))
   } else {
+    log.info(drawLine('^ log end') + '\n')
     log.info(drawLine('command'))
     log.info(result.cmd)
-    log.info(drawLine('log'))
-    log.info(result.stdout)
-    log.info(drawLine())
   }
   process.exit(result ? 0 : 1)
 }
