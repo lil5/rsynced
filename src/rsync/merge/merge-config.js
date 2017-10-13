@@ -25,7 +25,6 @@ const merge = (defaults, config) => {
  * @return {object}                 one config object
  */
 const mergeConfig = (localConfig, name = false) => {
-  console.log('localConfig:', localConfig)
   var destConfig
   var finalConfig = defaultsConfig
 

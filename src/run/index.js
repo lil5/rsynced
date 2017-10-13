@@ -22,7 +22,6 @@ const run = (configFilePath, destination = false, cwd = '.', dry = false) => {
 
       let configs = []
       try { // merge configs with defaults
-        console.log('rsynconfig.dests:', destinations)
         destinations.forEach((dest, i) => {
           // copy Object values under seperate data referances
           let newConfig = Object.assign({}, config)

@@ -28,12 +28,12 @@ const drawLine = (text = '') => {
 
 // commands for rsynconfig
 const rsynconfigThen = resultArr => {
-  (resultArr.logs).forEach((result, i) => {
+  log.info(drawLine(`^ log(s) end of ${resultArr.names.join(', ')}`))
+  ;(resultArr.logs).forEach((result, i) => {
     let name = resultArr.names[i]
     if (result === false) {
       log.error(drawLine(`canceled: ${name}`))
     } else {
-      log.info(drawLine(`^ log ${name} end`) + '\n')
       log.info(drawLine(`command ${name}`))
       log.info(result.cmd)
     }
