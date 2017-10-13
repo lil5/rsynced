@@ -29,16 +29,18 @@ const drawLine = (text = '') => {
 // commands for rsynconfig
 const rsynconfigThen = resultArr => {
   log.info(drawLine(`^ log(s) end of ${resultArr.names.join(', ')}`))
+  let isOnceCanceled = false
   ;(resultArr.logs).forEach((result, i) => {
     let name = resultArr.names[i]
     if (result === false) {
       log.error(drawLine(`canceled: ${name}`))
+      isOnceCanceled = true
     } else {
       log.info(drawLine(`command ${name}`))
       log.info(result.cmd)
     }
-    process.exit(result ? 0 : 1)
   })
+  process.exit(isOnceCanceled ? 0 : 1)
 }
 const rsynconfigCatch = error => {
   if (error) {
