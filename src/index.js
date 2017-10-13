@@ -1,6 +1,4 @@
-const path = require('path')
-
-const run = require('./rsync/')
+const run = require('./run/')
 const init = require('./init/')
 
 const dry = (config, destination = false, cwd = '.') => run(config, destination, cwd, true)
