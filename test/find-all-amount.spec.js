@@ -32,7 +32,7 @@ test('get one destination', t => {
 test('get multipule destinations', t => {
   let ans = findAllAmount(
     {destinations: demoArr},
-    'third',
+    'third-*',
   )
   t.deepEqual(ans, ['third-0', 'third-1', 'third-3'])
 })
@@ -40,7 +40,7 @@ test('get multipule destinations', t => {
 test('give no destinations', t => {
   let ans = findAllAmount(
     {},
-    'third',
+    'third-*',
   )
   t.deepEqual(ans, [false])
 })
