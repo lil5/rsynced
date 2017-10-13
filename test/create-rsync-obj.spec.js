@@ -1,7 +1,5 @@
-const create = require('../src/rsync/merge/create')
-// const rsync = require('rsync')
+const createRsyncObj = require('../src/rsync/merge/create-rsync-obj')
 const ava = require('ava')
-// const fs = require('fs')
 
 const test = ava.test
 
@@ -32,7 +30,7 @@ test('should create valid ssh command', t => {
   delete myExample.ssh.dest
 
   t.regex(
-    create(myExample).command(),
+    createRsyncObj(myExample).command(),
     /rsync --progress .* --rsh=ssh lil@localhost:\/([\w\d]+\/)+ ([\w\d]+\/)+/,
   )
 })
@@ -44,7 +42,7 @@ test('duel ssh remotes', t => {
 
   t.is(
     t.throws(() => {
-      create(myExample)
+      createRsyncObj(myExample)
     }).message,
     `the source and destination cannot both be remote`
   )
@@ -61,7 +59,7 @@ const giveSource = bool => bool ? 'source' : 'destination'
 
     t.is(
       t.throws(() => {
-        create(myExample)
+        createRsyncObj(myExample)
       }).message,
       `${giveSource(isSrc)} not set`
     )
@@ -83,7 +81,7 @@ const giveSource = bool => bool ? 'source' : 'destination'
       delete myExample.dest
     }
 
-    let ans = create(myExample).command()
+    let ans = createRsyncObj(myExample).command()
 
     switch (isSsh) {
       // case [[true, true], [true, true]]:

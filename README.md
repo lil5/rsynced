@@ -42,11 +42,12 @@ flags = 'dra'
 
 ```shell
 rsynconfig run localtest
-```
 
-**dry run:**
-```shell
+# dry run
 rsynconfig dry localtest
+
+# description can be a glob
+rsynconfig run local*
 ```
 
 ### Create template 'rsynconfig.toml' file

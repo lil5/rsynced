@@ -1,6 +1,9 @@
 const Rsync = require('rsync')
 const path = require('path')
 
+// functions
+// ---
+
 const isString = str => !!(typeof str === 'string' || str instanceof String) && str !== ''
 
 const sshPath = (sshConfig) => {
@@ -38,7 +41,7 @@ const setEnvironment = (src) => {
  * @return {rsync} rsync Object
  * @throw {Error}
  */
-module.exports = function create (config) {
+module.exports = function createRsyncObj (config) {
   let rsync = new Rsync()
   rsync.cwd(config.cwd)
   rsync.progress()

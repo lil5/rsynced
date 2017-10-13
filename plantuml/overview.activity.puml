@@ -1,0 +1,29 @@
+@startuml
+start
+:get nessesary data;
+note left
+configFilePath,
+destination(s),
+isDry,
+cwd
+end note
+:getFile(configFilePath);
+note right: rsync step 1
+:findAllAmount;
+while (destinations)
+:mergeConfig();
+note right: rsync step 2
+:createRsyncObj();
+note right: rsync step 3
+:execute();
+note right: rsync step 4
+endwhile
+:result;
+note
+{
+  names: [*..],
+  logs: [*..]
+}
+end note
+stop
+@enduml

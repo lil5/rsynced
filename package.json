@@ -6,15 +6,18 @@
   "scripts": {
     "start": "node bin/cli.js",
     "ls": "node_modules/.bin/ls-scripts",
+    "editorconfig": "editorconfig-checker --exclude-pattern './.nyc_output/**' --exclude-pattern './coverage/**'",
     "lint": "eslint ./**/*.js",
     "lint:fix": "eslint --fix ./**/*.js",
-    "debug": "ava test/index.spec.js",
-    "test": "nyc ava test/*.spec.js"
+    "ava": "ava test/*.spec.js",
+    "ava:watch": "ava -w test/*.spec.js",
+    "test": "nyc ava test/*.spec.js && npm run lint && npm run editorconfig"
   },
   "license": "MIT",
   "dependencies": {
     "commander": "^2.11.0",
     "loglevel": "^1.5.0",
+    "minimatch": "^3.0.4",
     "naml": "^2.0.0",
     "questions": "https://github.com/lil5/questions",
     "rsync": "^0.6.1",
@@ -30,6 +33,7 @@
   ],
   "devDependencies": {
     "ava": "^0.22.0",
+    "editorconfig-checker": "^1.1.1",
     "eslint": "^4.6.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
