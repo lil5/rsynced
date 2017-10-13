@@ -8,8 +8,9 @@
     "ls": "node_modules/.bin/ls-scripts",
     "lint": "eslint ./**/*.js",
     "lint:fix": "eslint --fix ./**/*.js",
-    "debug": "ava test/index.spec.js",
-    "test": "nyc ava test/*.spec.js"
+    "ava": "ava test/*.spec.js",
+    "ava:watch": "ava -w test/*.spec.js",
+    "test": "nyc ava test/*.spec.js && npm run lint"
   },
   "license": "MIT",
   "dependencies": {
