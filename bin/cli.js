@@ -45,7 +45,7 @@ const rsynconfigThen = resultArr => {
 const rsynconfigCatch = error => {
   if (error) {
     log.error(drawLine('error') + '\n' + error.message)
-    log.trace(error.stack)
+    log.error(error.stack)
   }
 
   process.exit(1)
@@ -60,9 +60,8 @@ program
   .option('-q --quiet', 'disable output')
   .option('-v --verbose', 'enable verbose output')
   .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
-  .action((name, options) => {
+  .action((name = false, options) => {
     setVerbosity(options.verbose, options.quiet)
-    // log.trace(options)
 
     // rsynconfig Promise
     rsynconfig(options.config, name, '.')
@@ -74,7 +73,7 @@ program
   .command('dry [name]')
   .option('-q --quiet', 'disable output')
   .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
-  .action((name, options) => {
+  .action((name = false, options) => {
     setVerbosity(true, options.quiet) // always verbose unless quiet
 
     // rsynconfig Promise

@@ -3,7 +3,7 @@ const minimatch = require('minimatch')
 const findAllAmount = (config, name) => {
   let names = []
 
-  if (config.destinations) {
+  if (config.destinations && name !== false) {
     ;(config.destinations).forEach(el => {
       // eslint-disable-next-line no-useless-escape
       let isFound = minimatch(el.name, name)
