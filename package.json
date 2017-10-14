@@ -15,8 +15,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.1.0",
     "commander": "^2.11.0",
-    "loglevel": "^1.5.0",
     "minimatch": "^3.0.4",
     "naml": "^2.0.0",
     "questions": "https://github.com/lil5/questions",

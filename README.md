@@ -79,7 +79,8 @@ const rsynconfig = require('rsynconfig')
 
 rsynconfig(configFile, destinationsName, cwd)
 .then((result) => {
-  // ..
+  // result.names[...]
+  // result.logs[...]
 })
 .catch(error => {
   if (error) {
@@ -91,6 +92,13 @@ rsynconfig(configFile, destinationsName, cwd)
   // ..
 })
 ```
+
+Globals are used for log verbosity
+```
+global.DEBUG = true
+global.QUIET = true
+```
+
 
 ## License
 

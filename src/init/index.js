@@ -11,7 +11,7 @@ const init = (isForce, filename, cwd = '.') => {
   // let isFile = true
 
   return new Promise((resolve, reject) => {
-    questions.askOne({info: 'Using SSH? [y/n]', default: 'y'}, result => {
+    function run (result) {
       let isSSH = result.search(/^y(es)?$/i) === 0
 
       let fileContents = ''
@@ -35,7 +35,13 @@ const init = (isForce, filename, cwd = '.') => {
           }
       }
       resolve(fileContents)
-    })
+    }
+
+    if (isForce) {
+      run('n')
+    } else {
+      questions.askOne({info: 'Using SSH? [y/n]', default: 'y'}, result => run(result))
+    }
   }).then(result => {
     // write file
     return new Promise((resolve, reject) => {

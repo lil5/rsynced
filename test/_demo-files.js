@@ -55,3 +55,5 @@ delete = true
     simpleObj: () => NAML.parse(simple, 'yaml'),
   }
 }
+
+ava.before('global QUIET', () => { global.QUIET = true })

@@ -44,7 +44,8 @@ const setEnvironment = (src) => {
 module.exports = function createRsyncObj (config) {
   let rsync = new Rsync()
   rsync.cwd(config.cwd)
-  rsync.progress()
+  if (!global.QUIET) rsync.progress()
+  if (!global.QUIET && global.DEBUG) rsync.set('info', 'progress2')
 
   // value in config is value in rsync
   ;['flags', 'exclude', 'include'].forEach(el => {

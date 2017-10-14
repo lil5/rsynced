@@ -2,50 +2,45 @@
 'use strict'
 
 const program = require('commander')
-const log = require('loglevel')
-const consoleSize = require('window-size')
+const chalk = require('chalk')
 const rsynconfig = require('../')
 
-const setVerbosity = (verbose, quiet) => {
-  /* eslint-disable eqeqeq */
-  if (process.env === 'development') log.setLevel('trace')
-  else if (quiet) log.setLevel(log.levels.SILENT)
-  else if (verbose) log.setLevel('debug')
-  else log.setLevel('info')
-  /* eslint-enable */
-}
+// set global logging varaibles
+global.QUIET = false
+global.DEBUG = false
 
-const drawLine = (text = '') => {
-  text = text.toUpperCase()
-  let size = consoleSize.get().width
-  let line = `---${text.length > 0 ? ` ${text} ` : ''}-`
-  while (size > line.length) {
-    line += '-'
-  }
-  line = '\n' + line
-  return line
+// for debug logs
+// if (!global.QUIET && global.DEBUG)
+//
+// for basic logs
+// if (!global.QUIET)
+
+const setVerbosity = (verbose, quiet) => {
+  if (process.env === 'development' || verbose) global.DEBUG = true
+  if (quiet) global.QUIET = true
 }
 
 // commands for rsynconfig
 const rsynconfigThen = resultArr => {
-  log.info(drawLine(`^ log(s) end of ${resultArr.names.join(', ')}`))
+  let isDefault = resultArr.names[0] === false
+  if (!global.QUIET) console.info(chalk.bold(`^ Log(s) end${isDefault ? '' : ` of ${resultArr.names.join(', ')}`}`))
   let isOnceCanceled = false
   ;(resultArr.logs).forEach((result, i) => {
     let name = resultArr.names[i]
     if (result === false) {
-      log.error(drawLine(`canceled: ${name}`))
+      if (!global.QUIET) console.error(chalk.red.bold(`Canceled${isDefault ? '' : ` ${name}`}`))
       isOnceCanceled = true
     } else {
-      log.info(drawLine(`command ${name}`))
-      log.info(result.cmd)
+      if (!global.QUIET) console.info(chalk.bold(`Command${isDefault ? '' : ` ${name}`}`))
+      if (!global.QUIET) console.log(result.cmd)
     }
   })
-  process.exit(isOnceCanceled ? 0 : 1)
+  process.exit(isOnceCanceled ? 1 : 0)
 }
 const rsynconfigCatch = error => {
   if (error) {
-    log.error(drawLine('error') + '\n' + error.message)
-    log.error(error.stack)
+    if (!global.QUIET) console.error(chalk.red.bold('Error:'), error.message)
+    if (!global.QUIET && global.DEBUG) console.error(chalk.grey(error.stack))
   }
 
   process.exit(1)
@@ -72,9 +67,10 @@ program
 program
   .command('dry [name]')
   .option('-q --quiet', 'disable output')
+  .option('-v --verbose', 'enable verbose output')
   .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
   .action((name = false, options) => {
-    setVerbosity(true, options.quiet) // always verbose unless quiet
+    setVerbosity(options.verbose, options.quiet) // always verbose unless quiet
 
     // rsynconfig Promise
     rsynconfig.dry(options.config, name, '.')
@@ -94,7 +90,9 @@ program
       options.config,
       '.'
     )
-      .then((result) => log.info(result))
+      .then((result) => {
+        if (!global.QUIET) console.log(result)
+      })
       .catch(error => rsynconfigCatch(error))
   })
 
