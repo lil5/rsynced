@@ -1,3 +1,8 @@
+[![NPM version][npm-image]][npm-url]
+[![Build status][travis-image]][travis-url]
+[![Lib dependences][libraries-dep-image]][libraries-dep-url]
+[![Commits][gh-commits-image]][gh-commits-url]
+
 # rsynconfig
 
 > One config file for all rsync.
@@ -90,3 +95,12 @@ rsynconfig(configFile, destinationsName, cwd)
 ## License
 
 MIT.
+
+[npm-image]: https://img.shields.io/npm/v/rsynconfig.svg
+[npm-url]: https://www.npmjs.com/package/rsynconfig
+[travis-image]: https://img.shields.io/travis/lil5/rsynconfig/master.svg
+[travis-url]: https://travis-ci.org/lil5/rsynconfig
+[libraries-dep-image]: https://img.shields.io/librariesio/github/lil5/rsynconfig.svg
+[libraries-dep-url]: https://libraries.io/github/lil5/rsynconfig#dependencies
+[gh-commits-image]: https://img.shields.io/github/last-commit/lil5/rsynconfig.svg
+[gh-commits-url]: https://github.com/lil5/rsynconfig/commits/master
