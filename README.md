@@ -9,9 +9,11 @@
 
 ## Installation
 
-npm: `npm i -g https://github.com/lil5/rsynconfig`
+npm: `npm i -g rsynconfig`
 
-yarn: `yarn global add https://github.com/lil5/rsynconfig`
+yarn: `yarn global add rsynconfig`
+
+make: `make` > [* uses npm under the hood*](https://github.com/lil5/rsynconfig/blob/master/Makefile)
 
 ## Usage
 
@@ -51,8 +53,8 @@ rsynconfig run localtest
 # dry run
 rsynconfig dry localtest
 
-# description can be a glob
-rsynconfig run local*
+# name can be a glob to run multiple
+rsynconfig run *test
 ```
 
 ### Create template 'rsynconfig.toml' file
@@ -96,7 +98,7 @@ rsynconfig(configFile, destinationsName, cwd)
 Globals are used for log verbosity
 ```
 global.DEBUG = true
-global.QUIET = true
+global.QUIET = false
 ```
 
 
