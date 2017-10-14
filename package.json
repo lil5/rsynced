@@ -22,7 +22,7 @@
     "questions": "https://github.com/lil5/questions",
     "rsync": "^0.6.1",
     "window-size": "^1.1.0",
-    "yargs": "^8.0.2"
+    "yargs": "^9.0.1"
   },
   "bin": {
     "rsynconfig": "bin/cli.js"
