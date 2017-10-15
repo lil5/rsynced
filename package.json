@@ -1,6 +1,6 @@
 {
   "name": "rsynconfig",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "One config file for all rsync.",
   "main": "src/index.js",
   "scripts": {
