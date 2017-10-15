@@ -55,6 +55,10 @@ rsynconfig dry localtest
 
 # name can be a glob to run multiple
 rsynconfig run *test
+
+# async run
+# possibly handy for remote synchronization with large files
+rsynconfig async localtest
 ```
 
 ### Create template 'rsynconfig.toml' file
