@@ -83,7 +83,7 @@ module.exports = function createRsyncObj (config) {
     }
 
     if (config.ssh.key) {
-      let keyFile = path.resolve(config.cwd, config.sshKey)
+      let keyFile = path.resolve(config.cwd, setEnvironment(config.ssh.key))
       rsync.shell(`ssh -i "${keyFile}"`)
     } else {
       rsync.shell('ssh')
