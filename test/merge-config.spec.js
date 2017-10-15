@@ -1,5 +1,5 @@
 const ava = require('ava')
-const demoFiles = require('./_demo-files')()
+const demoFiles = require('./_demo-files')(ava)
 
 const mergeConfig = require('../src/rsync/merge/merge-config')
 

@@ -1,5 +1,5 @@
 const ava = require('ava')
-const demoFiles = require('./_demo-files')()
+const demoFiles = require('./_demo-files')(ava)
 
 const getFile = require('../src/rsync/get-file')
 

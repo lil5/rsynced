@@ -1,8 +1,7 @@
-const ava = require('ava')
 const fs = require('fs')
 const NAML = require('naml')
 
-module.exports = () => {
+module.exports = ava => {
   const bad = `{
   src: dir0/
   destinations: [
@@ -55,5 +54,3 @@ delete = true
     simpleObj: () => NAML.parse(simple, 'yaml'),
   }
 }
-
-ava.before('global QUIET', () => { global.QUIET = true })
