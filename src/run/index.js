@@ -2,6 +2,7 @@ const path = require('path')
 
 const findAllAmount = require('./find-all-amount')
 const promiseAllSync = require('./promise-all-sync')
+const execSync = require('child_process').execSync
 
 // rsync
 /* 1 */ const getFile = require('../rsync/get-file')
@@ -21,6 +22,10 @@ const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = fal
         return Promise.reject(new Error('No destination found'))
       }
 
+      // before and after script in array
+      let beforeArr = []
+      let afterArr = []
+
       let configs = []
       try { // merge configs with defaults
         destinations.forEach((dest, i) => {
@@ -30,13 +35,29 @@ const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = fal
           let finalConfig = mergeConfig(newConfig, dest)
           finalConfig.cwd = cwd
           finalConfig.dry = dry
+          if (finalConfig.after) afterArr.push(finalConfig.after)
+          if (finalConfig.before) beforeArr.push(finalConfig.before)
           configs.push([createRsyncObj(finalConfig)])
         })
       } catch (err) {
         return Promise.reject(err)
       }
 
+      // run before scripts
+      if (dry !== true) {
+        beforeArr.forEach(command => {
+          execSync(command, {cwd: cwd})
+        })
+      }
+
       const thisReturn = logs => {
+        // run after scripts
+        if (dry !== true) {
+          afterArr.forEach(command => {
+            execSync(command, {cwd: cwd})
+          })
+        }
+
         destinations = destinations === false ? ['default'] : destinations
         return {
           names: destinations,
