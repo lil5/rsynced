@@ -9,7 +9,7 @@ const promiseAllSync = require('./promise-all-sync')
 /* 3 */ const createRsyncObj = require('../rsync/merge/create-rsync-obj')
 /* 4 */ const execute = require('../rsync/execute')
 
-const run = (configFilePath, destination = false, cwd = '.', dry = false) => {
+const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = false) => {
   // resolve paths
   configFilePath = path.resolve(cwd, configFilePath)
 
@@ -36,14 +36,28 @@ const run = (configFilePath, destination = false, cwd = '.', dry = false) => {
         return Promise.reject(err)
       }
 
-      return promiseAllSync(execute, configs).then(logs => {
+      const thisReturn = logs => {
         destinations = destinations === false ? ['default'] : destinations
         return {
           names: destinations,
           logs: logs,
         }
-      })
+      }
+
+      if (isAsync) {
+        let rsyncs = [] // Array<Promise>
+        destinations.forEach((dest, i) => {
+          rsyncs.push(execute(configs[i][0]))
+        })
+
+        return Promise.all(rsyncs).then(logs => thisReturn(logs))
+      } else {
+        return promiseAllSync(execute, configs).then(logs => thisReturn(logs))
+      }
     })
 }
 
-module.exports = run
+module.exports.sync =
+  (configFilePath, destination = false, cwd = '.', dry = false) => _run(false, configFilePath, destination, cwd, dry)
+module.exports.async =
+  (configFilePath, destination = false, cwd = '.', dry = false) => _run(true, configFilePath, destination, cwd, dry)

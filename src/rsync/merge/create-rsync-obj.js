@@ -45,7 +45,10 @@ module.exports = function createRsyncObj (config) {
   let rsync = new Rsync()
   rsync.cwd(config.cwd)
   if (!global.QUIET) rsync.progress()
-  if (!global.QUIET && global.DEBUG) rsync.set('info', 'progress2')
+  if (!global.QUIET && global.DEBUG) {
+    rsync.set('info', 'progress2')
+    rsync.set('stats')
+  }
 
   // value in config is value in rsync
   ;['flags', 'exclude', 'include'].forEach(el => {

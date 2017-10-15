@@ -65,6 +65,20 @@ program
   })
 
 program
+  .command('async [name]')
+  .option('-q --quiet', 'disable output')
+  .option('-v --verbose', 'enable verbose output')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
+  .action((name = false, options) => {
+    setVerbosity(options.verbose, options.quiet)
+
+    // rsynconfig Promise
+    rsynconfig.async(options.config, name, '.')
+      .then((result) => rsynconfigThen(result))
+      .catch(error => rsynconfigCatch(error))
+  })
+
+program
   .command('dry [name]')
   .option('-q --quiet', 'disable output')
   .option('-v --verbose', 'enable verbose output')

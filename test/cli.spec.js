@@ -1,8 +1,6 @@
 const ava = require('ava')
 const fs = require('fs')
 
-// global.QUIET = false
-
 const execSync = require('child_process').execSync
 
 const test = ava.test
@@ -46,6 +44,17 @@ test('dry with glob to name', t => {
     t.fail(e.message)
   } finally {
     t.regex(result.toString(), /[\s\S]*sending incremental file list[\s\S]*\^ Log\(s\) end[^\n][\s\S]*/)
+  }
+})
+
+test('dry no destination found', t => {
+  try {
+    execSync(
+      'node ../bin/cli.js dry baddestination',
+      {cwd: './example'}
+    )
+  } catch (e) {
+    t.regex(e.message, /[\s\S]*Error: No destination found[\s\S]*/)
   }
 })
 
