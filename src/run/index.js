@@ -1,6 +1,7 @@
 const path = require('path')
 
 const findAllAmount = require('./find-all-amount')
+const promiseAllSync = require('./promise-all-sync')
 
 // rsync
 /* 1 */ const getFile = require('../rsync/get-file')
@@ -29,18 +30,13 @@ const run = (configFilePath, destination = false, cwd = '.', dry = false) => {
           let finalConfig = mergeConfig(newConfig, dest)
           finalConfig.cwd = cwd
           finalConfig.dry = dry
-          configs.push(createRsyncObj(finalConfig))
+          configs.push([createRsyncObj(finalConfig)])
         })
       } catch (err) {
         return Promise.reject(err)
       }
 
-      let rsyncs = [] // Array<Promise>
-      destinations.forEach((dest, i) => {
-        rsyncs.push(execute(configs[i], dest, cwd, dry))
-      })
-
-      return Promise.all(rsyncs).then(logs => {
+      return promiseAllSync(execute, configs).then(logs => {
         destinations = destinations === false ? ['default'] : destinations
         return {
           names: destinations,
