@@ -14,7 +14,7 @@
 
 * Remove `owner` option.
 * Remove `group` option.
-* Add `chown` option.
+* Add `chmod` option.
 
 ### v1.2.0 (Deprecated)
 

@@ -19,7 +19,7 @@ const example = () => {
     },
     src: 'example/dir0/',
     dest: 'example/dir1/',
-    chown: ':www-data',
+    chmod: '+x',
     cwd: process.cwd(),
   }
 }

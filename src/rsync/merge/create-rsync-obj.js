@@ -51,7 +51,12 @@ module.exports = function createRsyncObj (config) {
   }
 
   // value in config is value in rsync
-  ;['flags', 'exclude', 'include'].forEach(el => {
+  ;[
+    'flags',
+    'exclude',
+    'include',
+    'chmod',
+  ].forEach(el => {
     if (config[el]) rsync[el](config[el])
   })
 
@@ -62,10 +67,6 @@ module.exports = function createRsyncObj (config) {
 
   if (!(config.filter === false)) {
     rsync.set('filter', 'dir-merge /.rsync-filter')
-  }
-
-  if (config.chown) {
-    rsync.set('chown', config.chown)
   }
 
   // define destination and source
