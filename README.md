@@ -19,9 +19,15 @@ make: `make` > [* uses npm under the hood*](https://github.com/lil5/rsynconfig/b
 
 > Run `rsynconfig -h` for more information about CLI arguments
 
+### Create template '.rsynconfig.toml' file
+
+```shell
+rsynconfig init
+```
+
 ### Example
 
-Create `rsynconfig.toml` file into root of the project:
+Edit or create `.rsynconfig.toml` file into root of the project:
 
 ```toml
 exclude = ['.rsync-filter']
@@ -61,11 +67,24 @@ rsynconfig run *test
 rsynconfig async localtest
 ```
 
-### Create template 'rsynconfig.toml' file
+### Config file options
 
-```shell
-rsynconfig init
-```
+|name|type(s)|default|description|example value (.toml)|
+|----|-------|-------|-----------|-------------|
+|`name`|`String`||name of destination in destinations array|`[[destinations]]`¬ `name = 'test'`|
+|`src`|`String`||local rsync source|`src = '/media/$USER/data/test/'`|
+|`dest`|`String`||local rsync destination|`dest = '$HOME/test'`|
+|`ssh.(dest/src).host`|`String`||ssh host|`[destinations.ssh.dest]`¬ `host = 'localhost'`|
+|`ssh.(dest/src).user`|`String`||ssh user|`[destinations.ssh.dest]`¬ `user = 'alex'`|
+|`ssh.(dest/src).path`|`String`||ssh root path|`[destinations.ssh.dest]`¬ `path = '/www'`|
+|`ssh.(dest/src).key`|`String`||ssh optional key|`[destinations.ssh.dest]`¬ `key = '$HOME/ssh.key'`|
+|`flags`|`Boolean`|`dr`|rsync flags|`flags = 'au'`|
+|`delete`|`Boolean`|`false`|delete flag|`delete = true`|
+|`exclude`|`String` or `Array`||exclude files|`exclude = ['.rsync-filter']`|
+|`include`|`String` or `Array`||exclude files _Warning!_ does not re-include excluded, use filter|`include = ['.rsync-filter']`|
+|`filter`|`Boolean`|`true`|searches for `.rsync-filter` files|`exclude = ['.rsync-filter']`|
+|`dry`|`Boolean`|`false`|rsync flags|`flags = 'au'`|
+|`chown`|`String`||permission of the files in the transfer|`flags = '+x'`|
 
 ## Not Another Markup Language (__[NAML](https://github.com/MarkTiedemann/naml)__)
 
