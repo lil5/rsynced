@@ -51,6 +51,11 @@ delete = true
 flags = 'dra'
 ```
 
+#### Examples by others
+* lil5 [link](https://gist.github.com/lil5/e358559a36da149f51262b7113287719)
+
+> Please contact me I would love to have more examples.
+
 ### Run synchronization
 
 ```shell
@@ -65,6 +70,11 @@ rsynconfig run *test
 # async run
 # possibly handy for remote synchronization with large files
 rsynconfig async localtest
+
+# restore
+# restore files from given dest to src
+# delete is always false; flags is 'a'
+rsynconfig restore localtest
 ```
 
 ### Config file options

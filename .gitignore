@@ -3,10 +3,11 @@ npm-debug.log
 coverage
 *.pid
 yarn.lock
+yarn-error.log
 .nyc_output
-
 **/.DS_Store
-
 tmp
 local
 build
+example/dir1
+example/dir2

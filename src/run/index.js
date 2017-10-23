@@ -1,6 +1,7 @@
 const path = require('path')
 
 const findAllAmount = require('./find-all-amount')
+const restore = require('./restore')
 const promiseAllSync = require('./promise-all-sync')
 const execSync = require('child_process').execSync
 
@@ -10,7 +11,14 @@ const execSync = require('child_process').execSync
 /* 3 */ const createRsyncObj = require('../rsync/merge/create-rsync-obj')
 /* 4 */ const execute = require('../rsync/execute')
 
-const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = false) => {
+const _run = (
+  configFilePath,
+  destination = false,
+  cwd = '.',
+  isAsync = false,
+  isDry = false,
+  isRestore = false,
+) => {
   // resolve paths
   configFilePath = path.resolve(cwd, configFilePath)
 
@@ -34,7 +42,8 @@ const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = fal
 
           let finalConfig = mergeConfig(newConfig, dest)
           finalConfig.cwd = cwd
-          finalConfig.dry = dry
+          finalConfig.isDry = isDry
+          if (isRestore) finalConfig = restore(finalConfig)
           if (finalConfig.after) afterArr.push(finalConfig.after)
           if (finalConfig.before) beforeArr.push(finalConfig.before)
           configs.push([createRsyncObj(finalConfig)])
@@ -44,7 +53,7 @@ const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = fal
       }
 
       // run before scripts
-      if (dry !== true) {
+      if (isDry !== true && isRestore !== true) {
         beforeArr.forEach(command => {
           execSync(command, {cwd: cwd})
         })
@@ -52,7 +61,7 @@ const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = fal
 
       const thisReturn = logs => {
         // run after scripts
-        if (dry !== true) {
+        if (isDry !== true && isRestore !== true) {
           afterArr.forEach(command => {
             execSync(command, {cwd: cwd})
           })
@@ -79,6 +88,31 @@ const _run = (isAsync, configFilePath, destination = false, cwd = '.', dry = fal
 }
 
 module.exports.sync =
-  (configFilePath, destination = false, cwd = '.', dry = false) => _run(false, configFilePath, destination, cwd, dry)
+  (configFilePath, destination = false, cwd = '.', isDry = false) => _run(
+    configFilePath,
+    destination,
+    cwd,
+    false,
+    isDry,
+    false,
+  )
+
 module.exports.async =
-  (configFilePath, destination = false, cwd = '.', dry = false) => _run(true, configFilePath, destination, cwd, dry)
+  (configFilePath, destination = false, cwd = '.', isDry = false) => _run(
+    configFilePath,
+    destination,
+    cwd,
+    true,
+    isDry,
+    false
+  )
+
+module.exports.restore =
+  (configFilePath, destination = false, cwd = '.', isDry = false) => _run(
+    configFilePath,
+    destination,
+    cwd,
+    false,
+    isDry,
+    true,
+  )

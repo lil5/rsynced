@@ -93,6 +93,20 @@ program
   })
 
 program
+  .command('restore [name]')
+  .option('-q --quiet', 'disable output')
+  .option('-v --verbose', 'enable verbose output')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
+  .action((name = false, options) => {
+    setVerbosity(options.verbose, options.quiet)
+
+    // rsynconfig Promise
+    rsynconfig.restore(options.config, name, '.')
+      .then((result) => rsynconfigThen(result))
+      .catch(error => rsynconfigCatch(error))
+  })
+
+program
   .command('init')
   .option('-f --force')
   .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')

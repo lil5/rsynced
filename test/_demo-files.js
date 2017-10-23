@@ -42,8 +42,10 @@ delete = true
   ava.before('create example toml', () => fs.writeFileSync('example/.rsynconfig.toml', example))
 
   ava.after('cleanup', () => {
-    fs.unlinkSync('example/simple.yaml')
-    fs.unlinkSync('example/bad.hjson')
+    try {
+      fs.unlinkSync('example/simple.yaml')
+      fs.unlinkSync('example/bad.hjson')
+    } catch (e) {}
   })
 
   return {
