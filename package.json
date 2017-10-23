@@ -19,10 +19,10 @@
     "commander": "^2.11.0",
     "minimatch": "^3.0.4",
     "naml": "^2.0.0",
-    "questions": "https://github.com/lil5/questions",
+    "questions": "https://github.com/lil5/questions.git#patch1",
     "rsync": "^0.6.1",
     "window-size": "^1.1.0",
-    "yargs": "^9.0.1"
+    "yargs": "^10.0.3"
   },
   "bin": {
     "rsynconfig": "bin/cli.js"
