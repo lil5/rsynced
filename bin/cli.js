@@ -107,6 +107,26 @@ program
   })
 
 program
+  .command('command [name]')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
+  .option('--restore', 'enable restore command output')
+  .action((name = false, options) => {
+    setVerbosity(true, false)
+
+    // rsynconfig Promise
+    rsynconfig.command(options.config, name, '.', options.restore)
+      .then((result) => {
+        ;['commands', 'before', 'after'].forEach(arrId => {
+          if (!global.QUIET) console.info(chalk.bold(arrId.toUpperCase()))
+          ;(result[arrId]).forEach(r => {
+            if (!global.QUIET) console.info(r)
+          })
+        })
+      })
+      .catch(error => rsynconfigCatch(error))
+  })
+
+program
   .command('init')
   .option('-f --force')
   .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')

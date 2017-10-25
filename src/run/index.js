@@ -18,6 +18,7 @@ const _run = (
   isAsync = false,
   isDry = false,
   isRestore = false,
+  isCommand = false,
 ) => {
   // resolve paths
   configFilePath = path.resolve(cwd, configFilePath)
@@ -51,38 +52,49 @@ const _run = (
       } catch (err) {
         return Promise.reject(err)
       }
-
+      if (isCommand !== true) {
       // run before scripts
-      if (isDry !== true && isRestore !== true) {
-        beforeArr.forEach(command => {
-          execSync(command, {cwd: cwd})
-        })
-      }
-
-      const thisReturn = logs => {
-        // run after scripts
         if (isDry !== true && isRestore !== true) {
-          afterArr.forEach(command => {
+          beforeArr.forEach(command => {
             execSync(command, {cwd: cwd})
           })
         }
 
-        destinations = destinations === false ? ['default'] : destinations
-        return {
-          names: destinations,
-          logs: logs,
+        const thisReturn = logs => {
+        // run after scripts
+          if (isDry !== true && isRestore !== true) {
+            afterArr.forEach(command => {
+              execSync(command, {cwd: cwd})
+            })
+          }
+
+          destinations = destinations === false ? ['default'] : destinations
+          return {
+            names: destinations,
+            logs: logs,
+          }
         }
-      }
 
-      if (isAsync) {
-        let rsyncs = [] // Array<Promise>
-        destinations.forEach((dest, i) => {
-          rsyncs.push(execute(configs[i][0]))
+        if (isAsync) {
+          let rsyncs = [] // Array<Promise>
+          destinations.forEach((dest, i) => {
+            rsyncs.push(execute(configs[i][0]))
+          })
+
+          return Promise.all(rsyncs).then(logs => thisReturn(logs))
+        } else {
+          return promiseAllSync(execute, configs).then(logs => thisReturn(logs))
+        }
+      } else { // isCommand: true
+        let commands = []
+        ;(configs).forEach(thisRsync => {
+          commands.push(thisRsync[0].command())
         })
-
-        return Promise.all(rsyncs).then(logs => thisReturn(logs))
-      } else {
-        return promiseAllSync(execute, configs).then(logs => thisReturn(logs))
+        return {
+          commands: commands,
+          before: beforeArr,
+          after: afterArr,
+        }
       }
     })
 }
@@ -95,6 +107,7 @@ module.exports.sync =
     false,
     isDry,
     false,
+    false,
   )
 
 module.exports.async =
@@ -104,7 +117,8 @@ module.exports.async =
     cwd,
     true,
     isDry,
-    false
+    false,
+    false,
   )
 
 module.exports.restore =
@@ -114,5 +128,17 @@ module.exports.restore =
     cwd,
     false,
     isDry,
+    true,
+    false,
+  )
+
+module.exports.command =
+  (configFilePath, destination = false, cwd = '.', isRestore = false) => _run(
+    configFilePath,
+    destination,
+    cwd,
+    false,
+    false,
+    isRestore,
     true,
   )

@@ -7,4 +7,5 @@ module.exports = run.sync
 module.exports.async = run.async
 module.exports.dry = dry
 module.exports.restore = run.restore
+module.exports.command = run.command
 module.exports.init = init
