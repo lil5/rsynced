@@ -18,7 +18,7 @@ const execute = (rsync) => {
     };
 
     function onStop () {
-      resolve(false)
+      reject(new Error('Stopped'))
       unbind()
     }
 
