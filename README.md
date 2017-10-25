@@ -2,6 +2,7 @@
 [![Build status][travis-image]][travis-url]
 [![Lib dependences][libraries-dep-image]][libraries-dep-url]
 [![Commits][gh-commits-image]][gh-commits-url]
+[![License][gh-license-image]][gh-license-url]
 
 # rsynconfig
 
@@ -139,11 +140,13 @@ global.QUIET = false
 
 MIT.
 
-[npm-image]: https://img.shields.io/npm/v/rsynconfig.svg
+[npm-image]: https://img.shields.io/npm/v/rsynconfig.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/rsynconfig
-[travis-image]: https://img.shields.io/travis/lil5/rsynconfig/master.svg
+[travis-image]: https://img.shields.io/travis/lil5/rsynconfig/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/lil5/rsynconfig
-[libraries-dep-image]: https://img.shields.io/librariesio/github/lil5/rsynconfig.svg
+[libraries-dep-image]: https://img.shields.io/librariesio/github/lil5/rsynconfig.svg?style=flat-square
 [libraries-dep-url]: https://libraries.io/github/lil5/rsynconfig#dependencies
-[gh-commits-image]: https://img.shields.io/github/last-commit/lil5/rsynconfig.svg
+[gh-commits-image]: https://img.shields.io/github/last-commit/lil5/rsynconfig.svg?style=flat-square
 [gh-commits-url]: https://github.com/lil5/rsynconfig/commits/master
+[gh-license-image]: https://img.shields.io/github/license/lil5/rsynconfig.svg?style=flat-square
+[gh-license-url]: https://github.com/lil5/rsynconfig/blob/master/LICENSE
