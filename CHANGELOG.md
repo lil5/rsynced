@@ -1,3 +1,8 @@
+### v2.6.x
+
+* Add command
+* Update dependencies
+
 ### v2.5.x
 
 * Add restore

@@ -1,6 +1,6 @@
 {
   "name": "rsynconfig",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "One config file for all rsync.",
   "main": "src/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.1.0",
+    "chalk": "^2.3.0",
     "commander": "^2.11.0",
     "minimatch": "^3.0.4",
     "naml": "^2.0.0",
@@ -32,7 +32,7 @@
     "bin/**/*.js"
   ],
   "devDependencies": {
-    "ava": "^0.22.0",
+    "ava": "^0.23.0",
     "editorconfig-checker": "^1.1.1",
     "eslint": "^4.6.1",
     "eslint-config-standard": "^10.2.1",
