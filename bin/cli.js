@@ -24,18 +24,7 @@ const setVerbosity = (verbose, quiet) => {
 const rsynconfigThen = resultArr => {
   let isDefault = resultArr.names[0] === false
   if (!global.QUIET) console.info(chalk.bold(`^ Log(s) end${isDefault ? '' : ` of ${resultArr.names.join(', ')}`}`))
-  let isOnceCanceled = false
-  ;(resultArr.logs).forEach((result, i) => {
-    let name = resultArr.names[i]
-    if (result === false) {
-      if (!global.QUIET) console.error(chalk.red.bold(`Canceled${isDefault ? '' : ` ${name}`}`))
-      isOnceCanceled = true
-    } else {
-      if (!global.QUIET) console.info(chalk.bold(`Command${isDefault ? '' : ` ${name}`}`))
-      if (!global.QUIET) console.log(result.cmd)
-    }
-  })
-  process.exit(isOnceCanceled ? 1 : 0)
+  process.exit(0)
 }
 const rsynconfigCatch = error => {
   if (error) {
@@ -103,6 +92,26 @@ program
     // rsynconfig Promise
     rsynconfig.restore(options.config, name, '.')
       .then((result) => rsynconfigThen(result))
+      .catch(error => rsynconfigCatch(error))
+  })
+
+program
+  .command('command [name]')
+  .option('-c, --config [filename]', 'set config file', '.rsynconfig.toml')
+  .option('--restore', 'enable restore command output')
+  .action((name = false, options) => {
+    setVerbosity(true, false)
+
+    // rsynconfig Promise
+    rsynconfig.command(options.config, name, '.', options.restore)
+      .then((result) => {
+        ;['commands', 'before', 'after'].forEach(arrId => {
+          if (!global.QUIET) console.info(chalk.bold(arrId.toUpperCase()))
+          ;(result[arrId]).forEach(r => {
+            if (!global.QUIET) console.info(r)
+          })
+        })
+      })
       .catch(error => rsynconfigCatch(error))
   })
 
