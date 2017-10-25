@@ -24,18 +24,7 @@ const setVerbosity = (verbose, quiet) => {
 const rsynconfigThen = resultArr => {
   let isDefault = resultArr.names[0] === false
   if (!global.QUIET) console.info(chalk.bold(`^ Log(s) end${isDefault ? '' : ` of ${resultArr.names.join(', ')}`}`))
-  let isOnceCanceled = false
-  ;(resultArr.logs).forEach((result, i) => {
-    let name = resultArr.names[i]
-    if (result === false) {
-      if (!global.QUIET) console.error(chalk.red.bold(`Canceled${isDefault ? '' : ` ${name}`}`))
-      isOnceCanceled = true
-    } else {
-      if (!global.QUIET) console.info(chalk.bold(`Command${isDefault ? '' : ` ${name}`}`))
-      if (!global.QUIET) console.log(result.cmd)
-    }
-  })
-  process.exit(isOnceCanceled ? 1 : 0)
+  process.exit(0)
 }
 const rsynconfigCatch = error => {
   if (error) {
