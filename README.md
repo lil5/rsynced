@@ -46,8 +46,8 @@ flags = 'u'
 
 [[destinations]]
 name = 'localtest'
-src = 'dir0'
-dest = 'dir1'
+src = 'dir0/'
+dest = 'dir1/'
 delete = true
 flags = 'dra'
 ```
@@ -84,7 +84,7 @@ rsynconfig restore localtest
 |----|-------|-------|-----------|-------------|
 |`name`|`String`||name of destination in destinations array|`[[destinations]]`¬ `name = 'test'`|
 |`src`|`String`||local rsync source|`src = '/media/$USER/data/test/'`|
-|`dest`|`String`||local rsync destination|`dest = '$HOME/test'`|
+|`dest`|`String`||local rsync destination|`dest = '$HOME/test/'`|
 |`ssh.(dest/src).host`|`String`||ssh host|`[destinations.ssh.dest]`¬ `host = 'localhost'`|
 |`ssh.(dest/src).user`|`String`||ssh user|`[destinations.ssh.dest]`¬ `user = 'alex'`|
 |`ssh.(dest/src).path`|`String`||ssh root path|`[destinations.ssh.dest]`¬ `path = '/www'`|

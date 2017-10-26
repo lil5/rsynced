@@ -37,7 +37,7 @@ const rsynconfigCatch = error => {
 
 // commander argv parser
 program
-  .version('2.6.1')
+  .version('2.6.2')
 
 program
   .command('run [name]')
