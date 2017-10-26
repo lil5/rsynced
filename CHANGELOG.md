@@ -2,6 +2,7 @@
 
 * Add command
 * Update dependencies
+* Fix include
 
 ### v2.5.x
 

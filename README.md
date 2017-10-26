@@ -91,11 +91,11 @@ rsynconfig restore localtest
 |`ssh.(dest/src).key`|`String`||ssh optional key|`[destinations.ssh.dest]`¬ `key = '$HOME/ssh.key'`|
 |`flags`|`Boolean`|`dr`|rsync flags|`flags = 'au'`|
 |`delete`|`Boolean`|`false`|delete flag|`delete = true`|
-|`exclude`|`String` or `Array`||exclude files|`exclude = ['.rsync-filter']`|
-|`include`|`String` or `Array`||exclude files _Warning!_ does not re-include excluded, use filter|`include = ['.rsync-filter']`|
-|`filter`|`Boolean`|`true`|searches for `.rsync-filter` files|`exclude = ['.rsync-filter']`|
-|`dry`|`Boolean`|`false`|rsync flags|`flags = 'au'`|
-|`chown`|`String`||permission of the files in the transfer|`flags = '+x'`|
+|`exclude`|`String` or `Array`||exclude files|`exclude = ['/A*']`|
+|`include`|`String` or `Array`||de-exclude files|`include = ['/Anna']`|
+|`filter`|`Boolean`|`true`|searches for `.rsync-filter` files|`filter = true`|
+|`dry`|`Boolean`|`false`|rsync flags|`dry = false`|
+|`chmod`|`String`||permission of the files in the transfer|`chmod = '+x'`|
 
 ## Not Another Markup Language (__[NAML](https://github.com/MarkTiedemann/naml)__)
 
