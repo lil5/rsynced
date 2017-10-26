@@ -53,8 +53,8 @@ module.exports = function createRsyncObj (config) {
   // value in config is value in rsync
   ;[
     'flags',
-    'exclude',
     'include',
+    'exclude',
     'chmod',
   ].forEach(el => {
     if (config[el]) rsync[el](config[el])
