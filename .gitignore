@@ -11,3 +11,4 @@ local
 build
 example/dir1
 example/dir2
+package-lock.json

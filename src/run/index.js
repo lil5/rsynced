@@ -43,7 +43,7 @@ const _run = (
 
           let finalConfig = mergeConfig(newConfig, dest)
           finalConfig.cwd = cwd
-          finalConfig.isDry = isDry
+          finalConfig.dry = isDry
           if (isRestore) finalConfig = restore(finalConfig)
           if (finalConfig.after) afterArr.push(finalConfig.after)
           if (finalConfig.before) beforeArr.push(finalConfig.before)
