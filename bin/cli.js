@@ -24,6 +24,12 @@ const setVerbosity = (verbose, quiet) => {
 const rsynconfigThen = resultArr => {
   let isDefault = resultArr.names[0] === false
   if (!global.QUIET) console.info(chalk.bold(`^ Log(s) end${isDefault ? '' : ` of ${resultArr.names.join(', ')}`}`))
+  if (global.DEBUG) {
+    ;(resultArr.logs).forEach((log, i) => {
+      console.info(chalk.bold(`Command${isDefault ? '' : ' ' + resultArr.names[i]}:`))
+      console.info(log.cmd)
+    })
+  }
   process.exit(0)
 }
 const rsynconfigCatch = error => {
